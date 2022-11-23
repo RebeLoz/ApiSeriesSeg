@@ -21,12 +21,11 @@ namespace ApiSeries.Utilidades
             CreateMap<TipoCreacionDTO, Tipos>();
             CreateMap<Tipos, TipoDTO>();
         }
-        private List<CategoriaDTO> MapSerieDTOCategorias (Serie serie, GetSerieDTO getSerieDTO)
+
+        private List<CategoriaDTO> MapSerieDTOCategorias(Serie serie, GetSerieDTO getSerieDTO)
         {
             var result = new List<CategoriaDTO>();
-
             if (serie.SerieCategoria == null) { return result; }
-
             foreach (var serieCategoria in serie.SerieCategoria)
             {
                 result.Add(new CategoriaDTO()
@@ -35,19 +34,16 @@ namespace ApiSeries.Utilidades
                     Name = serieCategoria.Categoria.Name
                 });
             }
-
             return result;
         }
 
         private List<GetSerieDTO> MapCategoriaDTOSeries(Categoria categoria, CategoriaDTO categoriaDTO)
         {
             var result = new List<GetSerieDTO>();
-
             if (categoria.SerieCategoria == null)
             {
                 return result;
             }
-
             foreach (var seriecategoria in categoria.SerieCategoria)
             {
                 result.Add(new GetSerieDTO()
@@ -56,7 +52,6 @@ namespace ApiSeries.Utilidades
                     Name = seriecategoria.Serie.Name
                 });
             }
-
             return result;
         }
 

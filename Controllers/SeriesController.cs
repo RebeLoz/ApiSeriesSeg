@@ -11,6 +11,7 @@ namespace ApiSeries.Controllers
 {
     [ApiController]
     [Route("series")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsAdmin")]
     public class SeriesController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
@@ -32,14 +33,13 @@ namespace ApiSeries.Controllers
             return mapper.Map<List<GetSerieDTO>>(series);
         }
 
-
-        [HttpGet("{id:int}", Name = "obtenerserie")] 
+        [HttpGet("{id:int}", Name = "obtenerserie")]
         public async Task<ActionResult<SerieDTOConCategorias>> Get(int id)
         {
             var serie = await dbContext.Series
                 .Include(serieDB => serieDB.SerieCategoria)
                 .ThenInclude(serieCategoriaDB => serieCategoriaDB.Categoria)
-                .FirstOrDefaultAsync(serieDB => serieDB.Id == id);
+                .FirstOrDefaultAsync(serieBD => serieBD.Id == id);
 
             if (serie == null)
             {

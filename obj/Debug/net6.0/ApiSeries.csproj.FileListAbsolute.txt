@@ -258,3 +258,4 @@ C:\Users\user\Documents\Proyectos\ApiSeriesSeg\ApiSeries\obj\Debug\net6.0\refint
 C:\Users\user\Documents\Proyectos\ApiSeriesSeg\ApiSeries\obj\Debug\net6.0\ApiSeries.pdb
 C:\Users\user\Documents\Proyectos\ApiSeriesSeg\ApiSeries\obj\Debug\net6.0\ApiSeries.genruntimeconfig.cache
 C:\Users\user\Documents\Proyectos\ApiSeriesSeg\ApiSeries\obj\Debug\net6.0\ref\ApiSeries.dll
+C:\Users\user\Documents\Proyectos\ApiSeriesSeg\ApiSeries\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll

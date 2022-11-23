@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ApiSeries.DTOs;
 using ApiSeries.Entidades;
+using ApiSeries.Migrations;
 
 namespace ApiSeries.Controllers
 {
@@ -34,7 +35,7 @@ namespace ApiSeries.Controllers
             var categoria = await dbContext.Categorias
                 .Include(categoriaDB => categoriaDB.SerieCategoria)
                 .ThenInclude(serieCategoriaDB => serieCategoriaDB.Serie)
-                //.Include(tipoDB => tipoDB.Tipos)
+                .Include(tipoDB => tipoDB.Tipos)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (categoria == null)
@@ -73,7 +74,7 @@ namespace ApiSeries.Controllers
 
             var categoriaDTO = mapper.Map<CategoriaDTO>(categoria);
 
-            return CreatedAtRoute("obtenerCatgoria", new { id = categoria.Id }, categoriaDTO);
+            return CreatedAtRoute("obtenerCategoria", new { id = categoria.Id }, categoriaDTO);
         }
 
         [HttpPut("{id:int}")]
@@ -104,7 +105,6 @@ namespace ApiSeries.Controllers
             {
                 return NotFound("El Recurso no fue encontrado.");
             }
-
             dbContext.Remove(new Categoria { Id = id });
             await dbContext.SaveChangesAsync();
             return Ok();
@@ -121,30 +121,30 @@ namespace ApiSeries.Controllers
             }
         }
 
-        //[HttpPatch("{id:int}")]
-       // public async Task<ActionResult> Patch(int id, JsonPatchDocument<CategoriaPatchDTO> patchDocument)
-       // {
-         //   if (patchDocument == null) { return BadRequest(); }
+        [HttpPatch("{id:int}")]
+        public async Task<ActionResult> Patch(int id, JsonPatchDocument<CategoriaPatchDTO> patchDocument)
+        {
+            if (patchDocument == null) { return BadRequest(); }
 
-         //   var categoriaDB = await dbContext.Categorias.FirstOrDefaultAsync(x => x.Id == id);
+            var categoriaDB = await dbContext.Categorias.FirstOrDefaultAsync(x => x.Id == id);
 
-        //    if (categoriaDB == null) { return NotFound(); }
+            if (categoriaDB == null) { return NotFound(); }
 
-        //    var categoriaDTO = mapper.Map<CategoriaPatchDTO>(categoriaDB);
+            var categoriaDTO = mapper.Map<CategoriaPatchDTO>(categoriaDB);
 
-        //    patchDocument.ApplyTo(categoriaDTO);
-//
-        //    var isValid = TryValidateModel(categoriaDTO);
+            patchDocument.ApplyTo(categoriaDTO);
 
-        //    if (!isValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+            var isValid = TryValidateModel(categoriaDTO);
 
-        //    mapper.Map(categoriaDTO, categoriaDB);
+            if (!isValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-       //     await dbContext.SaveChangesAsync();
-        //    return NoContent();
-       // }
+            mapper.Map(categoriaDTO, categoriaDB);
+
+            await dbContext.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }
